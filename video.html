@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProtectVid - Liste des vidéos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        body {
+            background-color: #1a1a1a;
+            color: #f1f1f1;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        header {
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ff6600;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: #ff6600;
+            transform: scale(1.1);
+        }
+
+        /* Message d'alerte visible */
+        .alert-message {
+            background-color: #ff6666;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-out;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alert-message button {
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .alert-message button:hover {
+            color: #ff6600;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .video-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 40px 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .video-item {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            width: 250px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeInVideo 1s ease-out forwards;
+        }
+        @keyframes fadeInVideo {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7);
+        }
+        .video-item iframe {
+            width: 100%;
+            height: 140px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid #ff6600; /* Bordure autour de la vidéo */
+            transition: transform 0.3s ease;
+        }
+        .video-item iframe:hover {
+            transform: scale(1.05);
+        }
+        .video-item a {
+            display: inline-block;
+            background-color: #ff6600;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 100%;
+            font-size: 16px;
+        }
+        .video-item a:hover {
+            background-color: #e55d00;
+            transform: scale(1.05);
+        }
+        .video-item a:focus {
+            outline: none;
+        }
+        .video-description {
+            color: #bbb;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: left;
+        }
+        .video-description span {
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        /* Section de mise en confiance */
+        .trust-message {
+            background-color: #333;
+            padding: 20px;
+            color: #fff;
+            margin: 30px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .trust-message p {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Section bas du site */
+        .footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 14px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .footer a {
+            color: #ff6600;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #e55d00;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">ProtectVid 🔒</div>
+    <nav>
+        <ul>
+            <li><a href="#">🏠 Accueil</a></li>
+            <li><a href="video.html">🎥 Vidéos</a></li>
+            <li><a href="#">📩 Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Indicateur de vidéos supprimées -->
+<div class="alert-message">
+    <strong>⚠️ Attention !</strong> Les vidéos ci-dessous sont signalées comme illégales et sont soumises à des actions légales. Cliquez sur "Supprimer" pour signaler toute vidéo.
+    <button onclick="this.parentElement.style.display='none';">❌ Fermer</button>
+</div>
+
+<!-- Mise en confiance -->
+<div class="trust-message">
+    <p>Nous avons déjà supprimé <strong>5 vidéos</strong> illégales 🔒 et nous poursuivons nos efforts pour garantir la sécurité des utilisateurs. Chaque vidéo signalée est immédiatement traitée avec la plus grande priorité 🚨.</p>
+</div>
+
+<section class="video-list">
+    <!-- Vidéo 1 -->
+    <div class="video-item">
+        <iframe src="https://drive.google.com/file/d/151dxoyn-7BZWwzFJ-eLUX1_ddhRDL2hU/preview" title="Vidéo 1"></iframe>
+        <div class="video-description">
+            <p><span>👤 Luc Muret:</span> 009</p>
+            <p><span>⏳ Jours écoulés:</span> 12 jours</p>
+        </div>
+        <a href="supprimer.html">🗑️ Supprimer</a>
+    </div>
+    <!-- Vidéo 2 -->
+    <div class="video-item">
+        <iframe src="https://drive.google.com/file/d/175nnPTHBV291oxAMMClCRjZxZk9o9cqA/preview" title="Vidéo 2"></iframe>
+        <div class="video-description">
+            <p><span>👤 Gilles Arber:</span> 026</p>
+            <p><span>⏳ Jours écoulés:</span>  06 heures</p>
+        </div>
+        <a href="supprimer.html">🗑️ Supprimer</a>
+    </div>
+    <!-- Vidéo 3 -->
+    <div class="video-item">
+        <iframe src="https://drive.google.com/file/d/1lYbEsT32kl3DG6fJK6_qQyrvpUWaYNIx/preview" title="Vidéo 3"></iframe>
+        <div class="video-description">
+            <p><span>👤 Paul Andre:</span> 0098</p>
+            <p><span>⏳ Jours écoulés:</span> 5 jours</p>
+        </div>
+        <a href="supprimer.html">🗑️ Supprimer</a>
+    </div>
+</section>
+
+<!-- Section bas du site -->
+<div class="footer">
+    <p>&copy; 2025 ProtectVid 🚨. Tous droits réservés. | <a href="#">Politique de confidentialité 🔒</a></p>
+</div>
+
+</body>
+</html>
